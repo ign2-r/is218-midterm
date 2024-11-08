@@ -1,108 +1,85 @@
 
 # Advanced Python Calculator
 
-This project is an advanced command-line calculator. It emphasizes professional software development practices, including the use of design patterns, logging, plugins, environment variables, and data management with Pandas.
+This repository contains an advanced Python-based calculator application developed for a software engineering course midterm project. 
+The project demonstrates the integration of core software engineering principles including design patterns, error handling strategies, comprehensive logging, 
+and a flexible plugin system for extending calculator functionalities.
 
-## Table of Contents
-- [Setup Instructions](#setup-instructions)
-- [Usage Examples](#usage-examples)
-- [Architectural Decisions](#architectural-decisions)
-  - [Design Patterns](#design-patterns)
-  - [Logging Strategy](#logging-strategy)
-  - [Environment Variables](#environment-variables)
-  - [Pandas for Data Management](#pandas-for-data-management)
-- [Plugins](#plugins)
-- [Testing and Coverage](#testing-and-coverage)
+## Features
+- **Basic Arithmetic Operations**: Addition, Subtraction, Multiplication, Division, Modulo, and Power.
+- **Dynamic Plugin System**: Supports additional operations through a plugin system, such as Square Root.
+- **History Management**: Tracks calculation history, with options to save, load, clear, and undo operations.
+- **Logging**: Comprehensive logging with configurable levels, severity differentiation, and support for both information and warnings.
+- **Design Patterns**: Implements Factory Method, Command, and Strategy design patterns to support modular and extensible code.
 
-## Setup Instructions
-
-1. **Clone the repository**
+## Usage Instructions
+### Setup
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/ign2-r/is218-midterm.git
    cd is218-midterm
    ```
 
-2. **Install dependencies**
-   The project requires Python 3.7+ and packages listed in `requirements.txt`.
+2. **Create and Activate Virtual Environment**:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up environment variables**
-   Create a `.env` file in the root directory with environment variables for logging, history storage, and logging level configuration.
+### Running the Calculator
+Once the environment is set up and dependencies are installed, start the calculator by running:
+```bash
+python3 -m app.main
+```
 
-   ```plaintext
-   ENVIRONMENT=development
-   LOG_LEVEL=DEBUG
-   HISTORY_FILE=history.csv
-   LOG_FILE=calculator.log
-   ```
-
-4. **Run Tests**
-   Run all tests using pytest:
-   ```bash
-   pytest --cov=app --cov-report=html
-   ```
-   This generates a coverage report viewable in the `htmlcov` directory.
-
-## Usage Examples
-
-1. **Basic Commands in REPL:**
-   ```plaintext
-   Simple Calculator. Type 'exit' to quit, 'history' to view history, 'save_history' to save, 'load_history' to load, 'clear_history' to clear.
-   Enter operation (e.g., 5 3 add): 5 3 add
-   Result: 8
-   ```
-   
-2. **Plugins Example:**
-   To use plugins like `sqrt`:
-   ```plaintext
-   Enter operation (e.g., sqrt 16): sqrt 16
-   Result: 4.0
-   ```
-   
-3. **History Commands:**
-   ```plaintext
-   Type 'history' to view saved calculations or 'clear_history' to delete all history.
-   ```
-
-## Architectural Decisions
-
-This project is structured for modularity, extensibility, and maintainability. Below are the primary architectural decisions made:
-
-### Design Patterns
-
-The project uses several design patterns:
-- **Facade Pattern** to simplify the interface for accessing history management and calculations.
-- **Command Pattern** for encapsulating calculator operations, making it easier to add new operations.
-- **Plugin System** allowing new operations to be dynamically loaded without modifying core code.
-
-### Logging Strategy
-
-The application uses a comprehensive logging strategy:
-- **Log Levels**: Environment variable `LOG_LEVEL` controls the logging verbosity (e.g., DEBUG, INFO).
-- **Error Handling**: Different log levels differentiate warnings, errors, and information messages.
-
-### Environment Variables
-
-Environment variables are used to manage configurable settings without hardcoding them:
-- **LOG_LEVEL**: Controls logging verbosity.
-- **HISTORY_FILE**: Specifies the file for saving calculation history.
-
-### Pandas for Data Management
-
-Pandas is utilized for flexible management of calculation history:
-- **CSV Storage**: Allows saving and loading history for persistence.
-- **Data Operations**: Pandas simplifies operations on stored history.
-
-## Plugins
-
-The plugin system enables dynamically loaded operations. Each plugin is structured to integrate easily with the main calculator without requiring changes to core code.
-
-## Testing and Coverage
-
-The project includes extensive unit tests for each module. Run tests using:
+### Testing
+To run tests with coverage and generate an HTML report:
 ```bash
 pytest --cov=app --cov-report=html
 ```
-Coverage reports are generated in `htmlcov/`.
+
+## Key Architectural Components
+
+### Design Patterns
+- **Factory Method**: The plugin loader in the `Calculator` class uses the factory method to dynamically load plugins from the plugins directory. This pattern allows easy integration of new functionalities without altering core code.
+- **Command Pattern**: Each calculation command (add, subtract, etc.) operates as a discrete, interchangeable unit, allowing flexibility in handling different operations.
+- **Strategy Pattern**: Operations like addition, subtraction, etc., are encapsulated within the `BasicCalculation` class, enabling flexible strategies for each operation.
+
+### Error Handling (LBYL and EAFP)
+- **Look Before You Leap (LBYL)**: The calculator uses checks before performing actions such as division and modulo to prevent ZeroDivisionError, ensuring proactive error handling.
+- **Easier to Ask for Forgiveness than Permission (EAFP)**: The code uses `try-except` blocks in cases where direct execution is simpler, such as when attempting to perform operations or loading plugins.
+
+### Logging
+- **Configurable Logging**: Set up through environment variables in `.env`, allowing control over the logging level (e.g., DEBUG, INFO, WARNING, ERROR).
+- **Differentiated Severity**: Uses different log levels to differentiate between routine information (INFO), potential issues (WARNING), and errors (ERROR), allowing effective monitoring and debugging.
+- **Warnings**: Logs invalid operations as warnings to help track incorrect user inputs or unsupported actions without interrupting program flow.
+
+### Plugin System
+The plugin system allows additional functionalities to be integrated without modifying core code. Each plugin (e.g., `sqrt`) is defined as a module with a specific operation. Plugins are dynamically loaded by the `Calculator` class, which searches the plugins directory and registers available operations.
+
+**Example Plugin (`sqrt`)**:
+```python
+# Square root plugin
+import math
+
+def sqrt(a):
+    return math.sqrt(a)
+
+plugin = {
+    "sqrt": sqrt
+}
+```
+This plugin setup supports adding custom operations to the calculator without altering its core logic, exemplifying the open/closed principle.
+
+## Project Structure
+- `app/`: Core application code, including the `Calculator`, `HistoryManager`, and arithmetic operations.
+- `plugins/`: Contains dynamically loaded plugins for additional calculator functionalities.
+- `tests/`: Unit tests for verifying functionality and ensuring comprehensive test coverage.
+
+## Author Information
+This project was developed by Rockwell Dela Rosa as part of a midterm project for a software engineering course.
