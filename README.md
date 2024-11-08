@@ -1,85 +1,75 @@
-
 # Advanced Python Calculator
 
-This repository contains an advanced Python-based calculator application developed for a software engineering course midterm project. 
-The project demonstrates the integration of core software engineering principles including design patterns, error handling strategies, comprehensive logging, 
-and a flexible plugin system for extending calculator functionalities.
+This project is an advanced Python calculator application, created for a software engineering course. The calculator integrates core software engineering concepts, including design patterns, exception handling, a plugin system, logging, and more.
 
-## Features
-- **Basic Arithmetic Operations**: Addition, Subtraction, Multiplication, Division, Modulo, and Power.
-- **Dynamic Plugin System**: Supports additional operations through a plugin system, such as Square Root.
-- **History Management**: Tracks calculation history, with options to save, load, clear, and undo operations.
-- **Logging**: Comprehensive logging with configurable levels, severity differentiation, and support for both information and warnings.
-- **Design Patterns**: Implements Factory Method, Command, and Strategy design patterns to support modular and extensible code.
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Setup and Installation](#setup-and-installation)
+- [Features](#features)
+  - [Design Patterns](#design-patterns)
+  - [Exception Handling (LBYL and EAFP)](#exception-handling-lbyl-and-eafp)
+  - [Logging](#logging)
+  - [Plugin System](#plugin-system)
+- [Usage](#usage)
 
-## Usage Instructions
-### Setup
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/ign2-r/is218-midterm.git
-   cd is218-midterm
-   ```
+## Project Overview
+This calculator provides basic arithmetic operations, history management, and a dynamically-loaded plugin system. It's structured to highlight clean code practices and software engineering principles.
 
-2. **Create and Activate Virtual Environment**:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-### Running the Calculator
-Once the environment is set up and dependencies are installed, start the calculator by running:
+## Setup and Installation
 ```bash
+# Clone the repository
+git clone https://github.com/ign2-r/is218-midterm.git
+cd is218-midterm
+
+# Set up virtual environment and install dependencies
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Run the calculator
 python3 -m app.main
 ```
 
-### Testing
-To run tests with coverage and generate an HTML report:
-```bash
-pytest --cov=app --cov-report=html
-```
-
-## Key Architectural Components
+## Features
 
 ### Design Patterns
-- **Factory Method**: The plugin loader in the `Calculator` class uses the factory method to dynamically load plugins from the plugins directory. This pattern allows easy integration of new functionalities without altering core code.
-- **Command Pattern**: Each calculation command (add, subtract, etc.) operates as a discrete, interchangeable unit, allowing flexibility in handling different operations.
-- **Strategy Pattern**: Operations like addition, subtraction, etc., are encapsulated within the `BasicCalculation` class, enabling flexible strategies for each operation.
+1. **Factory Method**: Used to instantiate calculation operations, enhancing modularity.
+   - [Factory Code](https://github.com/ign2-r/is218-midterm/blob/main/app/operations/__init__.py)
+   
+2. **Singleton Pattern**: Ensures only one instance of the `HistoryManager`.
+   - [Singleton Code](https://github.com/ign2-r/is218-midterm/blob/main/app/historymanager/__init__.py)
 
-### Error Handling (LBYL and EAFP)
-- **Look Before You Leap (LBYL)**: The calculator uses checks before performing actions such as division and modulo to prevent ZeroDivisionError, ensuring proactive error handling.
-- **Easier to Ask for Forgiveness than Permission (EAFP)**: The code uses `try-except` blocks in cases where direct execution is simpler, such as when attempting to perform operations or loading plugins.
+3. **Command Pattern**: Implements operations (e.g., add, subtract) as commands in the calculator.
+   - [Command Pattern Code](https://github.com/ign2-r/is218-midterm/blob/main/app/calculator/__init__.py)
+
+4. **Facade Pattern**: Provides a simplified interface for accessing calculation and history.
+   - [Facade Pattern Code](https://github.com/ign2-r/is218-midterm/blob/main/app/calculation/__init__.py)
+
+### Exception Handling (LBYL and EAFP)
+This project utilizes both **Look Before You Leap (LBYL)** and **Easier to Ask for Forgiveness than Permission (EAFP)** strategies for error handling:
+- **LBYL**: Checks conditions before executing operations.
+   - [Example Code](https://github.com/ign2-r/is218-midterm/blob/main/app/calculator/__init__.py#L34)
+   
+- **EAFP**: Catches and handles exceptions when they occur.
+   - [Example Code](https://github.com/ign2-r/is218-midterm/blob/main/app/calculation/__init__.py#L40)
 
 ### Logging
-- **Configurable Logging**: Set up through environment variables in `.env`, allowing control over the logging level (e.g., DEBUG, INFO, WARNING, ERROR).
-- **Differentiated Severity**: Uses different log levels to differentiate between routine information (INFO), potential issues (WARNING), and errors (ERROR), allowing effective monitoring and debugging.
-- **Warnings**: Logs invalid operations as warnings to help track incorrect user inputs or unsupported actions without interrupting program flow.
+Logging is implemented with varying levels (INFO, WARNING, ERROR) for debugging and monitoring:
+- **INFO**: Records general operations.
+- **WARNING**: Captures invalid operations.
+- **ERROR**: Logs exceptions such as division by zero.
+
+Logging Configuration:
+- [Logging Setup Code](https://github.com/ign2-r/is218-midterm/blob/main/app/main.py#L20)
 
 ### Plugin System
-The plugin system allows additional functionalities to be integrated without modifying core code. Each plugin (e.g., `sqrt`) is defined as a module with a specific operation. Plugins are dynamically loaded by the `Calculator` class, which searches the plugins directory and registers available operations.
+The plugin system dynamically loads additional operations, allowing for modular functionality:
+- **Example Plugin (Square Root)**: The `sqrt` function can be dynamically loaded and called.
+  - [Plugin Code](https://github.com/ign2-r/is218-midterm/blob/main/plugins/sqrt.py)
 
-**Example Plugin (`sqrt`)**:
-```python
-# Square root plugin
-import math
-
-def sqrt(a):
-    return math.sqrt(a)
-
-plugin = {
-    "sqrt": sqrt
-}
+## Usage
+Run the application in a REPL interface, using operations like `add`, `subtract`, `multiply`, etc., and dynamically loaded plugins.
+```bash
+# Example usage
+Enter operation (e.g., 2 3 add): 5
 ```
-This plugin setup supports adding custom operations to the calculator without altering its core logic, exemplifying the open/closed principle.
-
-## Project Structure
-- `app/`: Core application code, including the `Calculator`, `HistoryManager`, and arithmetic operations.
-- `plugins/`: Contains dynamically loaded plugins for additional calculator functionalities.
-- `tests/`: Unit tests for verifying functionality and ensuring comprehensive test coverage.
-
-## Author Information
-This project was developed by Rockwell Dela Rosa as part of a midterm project for a software engineering course.
