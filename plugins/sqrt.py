@@ -1,3 +1,4 @@
+"""Square root plugin"""
 import math
 
 def sqrt(a):
