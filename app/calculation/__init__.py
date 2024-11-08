@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 class Calculation(ABC):
     """Abstract base class for calculator operations."""
-    
     @abstractmethod
     def calculate(self, a: float, b: float, operation: str) -> Union[float, str]:
         """Abstract method to perform a calculation."""
@@ -19,7 +18,6 @@ class Calculation(ABC):
 
 class BasicCalculation(Calculation):
     """Concrete class for basic calculations with logging."""
-    
     def calculate(self, a: float, b: float, operation: str) -> Union[float, str]:
         """Perform the operation based on the input, with logging for each operation."""
         try:
@@ -30,8 +28,12 @@ class BasicCalculation(Calculation):
             elif operation == 'multiply':
                 result = multiplication(a, b)
             elif operation == 'divide':
+                if b == 0:
+                    raise ZeroDivisionError("Cannot divide by zero.")
                 result = division(a, b)
             elif operation == 'modulo':
+                if b == 0:
+                    raise ZeroDivisionError("Cannot modulo by zero.")
                 result = modulo(a, b)
             elif operation == 'power':
                 result = power(a, b)
@@ -42,9 +44,9 @@ class BasicCalculation(Calculation):
             logger.info("Performed %s operation on %s and %s with result: %s", operation, a, b, result)
             return result
 
-        except ZeroDivisionError:
+        except ZeroDivisionError as e:
             logger.error("Division or modulo by zero error with operation %s on %s and %s", operation, a, b)
-            return "Cannot divide by zero."
+            return str(e)
         except Exception as e:
             logger.exception("An error occurred while performing the %s operation: %s", operation, e)
             return str(e)
