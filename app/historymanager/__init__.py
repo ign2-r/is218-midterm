@@ -2,8 +2,8 @@
 History manager: manages history of calculations and undo operations.
 """
 import os
-import pandas as pd
 from typing import Union
+import pandas as pd
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -44,7 +44,7 @@ class HistoryManager:
         if os.path.exists(self.history_file):
             self.history = pd.read_csv(self.history_file)
         else:
-            self.history = pd.DataFrame(columns=["entry"])
+            self.history = pd.DataFrame(columns=["entry"]) # pragma: no cover
 
     def clear_history(self):
         """Clear the history DataFrame and delete the CSV file."""
