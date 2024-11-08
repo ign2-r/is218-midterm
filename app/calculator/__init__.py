@@ -52,15 +52,12 @@ class Calculator:
 
     def calculate_and_log(self, a: float, b: float, operation: str) -> Union[float, str]:
         """Calculate the result, log the operation in history, and return the result or error."""
-        func = self.operations.get(operation)
-        if func:
-            # Use the function for binary operations
-            result = func(a, b, operation)
-            if isinstance(result, (int, float)):
-                entry = f"{a} {operation} {b} = {result}"
-                self.history_manager.add_to_history(entry)
-            return result
-        return "Invalid operation."
+        # Call calculate, which will handle logging of invalid operations
+        result = self.calculation.calculate(a, b, operation)
+        if isinstance(result, (int, float)):
+            entry = f"{a} {operation} {b} = {result}"
+            self.history_manager.add_to_history(entry)
+        return result
 
     def get_history(self) -> list:
         """Return the calculation history."""

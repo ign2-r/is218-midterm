@@ -7,7 +7,7 @@ from typing import Union
 from app.operations import addition, subtraction, multiplication, division, modulo, power
 
 # Set up a logger for this module
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 class Calculation(ABC):
     """Abstract base class for calculator operations."""
@@ -40,8 +40,6 @@ class BasicCalculation(Calculation):
             else:
                 logger.warning("Invalid operation requested: %s", operation)
                 return "Invalid operation."
-
-            logger.info("Performed %s operation on %s and %s with result: %s", operation, a, b, result)
             return result
 
         except ZeroDivisionError as e:

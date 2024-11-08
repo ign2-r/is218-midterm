@@ -16,7 +16,7 @@ log_level = os.getenv("LOG_LEVEL", "INFO").upper()
 
 logging.basicConfig(
     filename=log_file,
-    level=getattr(logging, log_level, logging.INFO),
+    level=getattr(logging, log_level, logging.DEBUG),
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
