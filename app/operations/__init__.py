@@ -16,14 +16,17 @@ def multiplication(a: float, b: float) -> float:
     return a * b
 
 def division(a: float, b: float) -> Union[float, str]:
+    """Perform division."""
     if b == 0:
         return "Cannot divide by zero."
     return a / b
 
 def modulo(a: float, b: float) -> Union[float, str]:
+    """Perform modulo."""
     if b == 0:
         return "Cannot modulo by zero."
     return a % b
 
 def power(a: float, b: float) -> float:
+    """Perform power function."""
     return a ** b
