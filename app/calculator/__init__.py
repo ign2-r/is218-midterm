@@ -26,17 +26,19 @@ from app.historymanager import HistoryManager
 
 class Calculator:
     """Class that integrates calculation, history management, and dynamically loaded plugins."""
+    
     def __init__(self):
         self.calculation = BasicCalculation()
         self.history_manager = HistoryManager()
-        # Add modulo and power to operations
+        
+        # Define basic operations that require two arguments
         self.operations = {
-            "add": self.calculation.calculate,
-            "subtract": self.calculation.calculate,
-            "multiply": self.calculation.calculate,
-            "divide": self.calculation.calculate,
-            "modulo": self.calculation.calculate,
-            "power": self.calculation.calculate
+            "add": lambda a, b: self.calculation.calculate(a, b, "add"),
+            "subtract": lambda a, b: self.calculation.calculate(a, b, "subtract"),
+            "multiply": lambda a, b: self.calculation.calculate(a, b, "multiply"),
+            "divide": lambda a, b: self.calculation.calculate(a, b, "divide"),
+            "modulo": lambda a, b: self.calculation.calculate(a, b, "modulo"),
+            "power": lambda a, b: self.calculation.calculate(a, b, "power"),
         }
         self.load_plugins()
 
@@ -50,14 +52,20 @@ class Calculator:
                 if hasattr(module, "plugin"):
                     self.operations.update(module.plugin)
 
-    def calculate_and_log(self, a: float, b: float, operation: str) -> Union[float, str]:
+    def calculate_and_log(self, a: float, b: Union[float, None], operation: str) -> Union[float, str]:
         """Calculate the result, log the operation in history, and return the result or error."""
-        # Call calculate, which will handle logging of invalid operations
-        result = self.calculation.calculate(a, b, operation)
-        if isinstance(result, (int, float)):
-            entry = f"{a} {operation} {b} = {result}"
-            self.history_manager.add_to_history(entry)
-        return result
+        func = self.operations.get(operation)
+        
+        # Call the operation based on single or double argument requirements
+        if func:
+            try:
+                result = func(a) if b is None else func(a, b)
+                entry = f"{operation}({a}) = {result}" if b is None else f"{a} {operation} {b} = {result}"
+                self.history_manager.add_to_history(entry)
+                return result
+            except Exception as e:
+                return f"Error occurred: {str(e)}"
+        return "Invalid operation."
 
     def get_history(self) -> list:
         """Return the calculation history."""
