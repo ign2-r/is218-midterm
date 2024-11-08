@@ -25,20 +25,18 @@ def test_basic_calculation_valid(a, b, operation, expected):
     calc = BasicCalculation()
     assert calc.calculate(a, b, operation) == expected
 
-# Test division and modulo by zero
-@pytest.mark.parametrize("a, b, operation", [
-    (10, 0, 'divide'),
-    (5, 0, 'modulo')
+# Test division and modulo by zero with distinct messages
+@pytest.mark.parametrize("a, b, operation, expected_message", [
+    (10, 0, 'divide', "Cannot divide by zero."),
+    (5, 0, 'modulo', "Cannot modulo by zero.")
 ])
-def test_calculation_division_by_zero(a, b, operation):
+def test_divide_or_modulo_by_zero(a, b, operation, expected_message):
     """
-    Test that division and modulo by zero raise the appropriate error message.
+    Test that division and modulo by zero return distinct error messages.
     """
     calc = BasicCalculation()
-    if operation == 'divide':
-        assert calc.calculate(a, b, operation) == "Cannot divide by zero."
-    elif operation == 'modulo':
-        assert calc.calculate(a, b, operation) == "Cannot modulo by zero."
+    result = calc.calculate(a, b, operation)
+    assert result == expected_message
 
 # Test invalid operations
 @pytest.mark.parametrize("a, b, operation", [
@@ -92,16 +90,3 @@ def test_calculation_unexpected_exception(a, b, operation):
     result = calc.calculate(a, b, operation)
     # Check that result is a string message and not a numeric value
     assert isinstance(result, str) and not result.isdigit()
-# Test division and modulo by zero to trigger the return message
-@pytest.mark.parametrize("a, b, operation, expected_message", [
-    (10, 0, 'divide', "Cannot divide by zero."),
-    (5, 0, 'modulo', "Cannot modulo by zero.")
-])
-def test_division_and_modulo_by_zero_error(a, b, operation, expected_message):
-    """
-    Test that division or modulo by zero returns the appropriate error message.
-    """
-    calc = BasicCalculation()
-    result = calc.calculate(a, b, operation)
-    # Assert that the returned message matches the expected error message
-    assert result == expected_message
