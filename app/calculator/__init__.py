@@ -9,11 +9,14 @@ class Calculator:
     def __init__(self):
         self.calculation = BasicCalculation()
         self.history_manager = HistoryManager()
+        # Add modulo and power to operations
         self.operations = {
             "add": self.calculation.calculate,
             "subtract": self.calculation.calculate,
             "multiply": self.calculation.calculate,
-            "divide": self.calculation.calculate
+            "divide": self.calculation.calculate,
+            "modulo": self.calculation.calculate,
+            "power": self.calculation.calculate
         }
         self.load_plugins()
 
@@ -31,8 +34,8 @@ class Calculator:
         """Calculate the result, log the operation in history, and return the result or error."""
         func = self.operations.get(operation)
         if func:
-            # Use the function based on the operation, handling single and double operand cases
-            result = func(a, b, operation) if operation in ["add", "subtract", "multiply", "divide"] else func(a)
+            # Use the function for binary operations
+            result = func(a, b, operation)
             if isinstance(result, (int, float)):
                 entry = f"{a} {operation} {b} = {result}"
                 self.history_manager.add_to_history(entry)
