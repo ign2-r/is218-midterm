@@ -1,3 +1,23 @@
+"""
+Calculator Module
+
+This module provides the `Calculator` class, which integrates basic arithmetic operations, 
+history management, and a plugin system to allow dynamically loaded operations.
+
+Classes:
+    Calculator: Manages calculations and history, with support for dynamic plugins.
+
+Functions and Functionalities:
+    - Performs arithmetic operations such as addition, subtraction, multiplication, division, modulo, and power.
+    - Supports history management, including saving, loading, clearing, and undoing the last calculation.
+    - Loads plugins dynamically to extend supported operations.
+    - Logs calculation activity and errors for monitoring and debugging.
+
+Usage:
+    The `Calculator` class can be used in an interactive REPL environment or integrated into other applications 
+    where a calculation engine with history and plugin support is needed.
+"""
+
 import os
 import importlib
 from typing import Union
