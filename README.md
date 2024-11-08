@@ -1,1 +1,1 @@
-# is218-midterm
+Python Calculator for IS218 Fall 2024
