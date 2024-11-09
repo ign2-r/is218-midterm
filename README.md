@@ -1,6 +1,8 @@
 # Advanced Python Calculator
 
-This project is an advanced Python calculator application, created for a software engineering course. The calculator integrates core software engineering concepts, including design patterns, exception handling, a plugin system, logging, and more.
+This project is an advanced Python calculator application, created for a software engineering course. The calculator integrates core software engineering concepts, including design patterns, exception handling, a plugin system, logging, and more. Video below for live demonstration.
+
+[![Demonstration](https://img.youtube.com/vi/rJ3v046Aqis/0.jpg)](https://www.youtube.com/watch?v=rJ3v046Aqis)
 
 ## Table of Contents
 - [Project Overview](#project-overview)
